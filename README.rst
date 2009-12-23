@@ -14,4 +14,4 @@ vist the `online django-calabar documentation`_
 .. _`calabar`: http://github.com/winhamwr/calabar
 .. _`Django-Calabar`: http://github.com/winhamwr/django-calabar
 .. _`sphinx`: http://sphinx.pocoo.org/
-.. _`online calabar documentation`: http://winhamwr.github.com/django-calabar/
+.. _`online django-calabar documentation`: http://winhamwr.github.com/django-calabar/
