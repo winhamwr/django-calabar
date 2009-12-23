@@ -7,23 +7,6 @@ class TunnelConfig(models.Model):
     A configuration object for a specific tunnel. This objects encapsulates the
     specific configuration file and options for its tunnel.
     """
-    name = models.CharField(max_length=100, unique=True)
-    """The Tunnel's name. Corresponds to its [tunnel:xxx] entry in the calabar configuration"""
-    tunnel_type = models.CharField(max_length=30)
-    """Type of network tunnel this instance represents. Validators are based on this"""
-    cal_conf = models.TextField()
-    """The text for this Tunnels entry in its calabar.conf"""
-    tunnel_conf = models.TextField()
-    """The contents of the configuration file for this specific tunnel type"""
-    tunnel_conf_file = models.FileField('tunnel configuration file',
-                                        upload_to=TunnelConfig.get_tunnel_conf_upload_dir,
-                                        max_length=255,
-                                        blank=True, null=True)
-    """The tunnel configuration file for this specific tunnel"""
-
-    def __unicode__(self):
-        return u"Tunnel:<%s>" % self.name
-
     @staticmethod
     def get_tunnel_conf_upload_dir(instance, filename):
         """
@@ -38,28 +21,30 @@ class TunnelConfig(models.Model):
         )
         return path
 
+    name = models.CharField(max_length=100, unique=True)
+    """The Tunnel's name. Corresponds to its [tunnel:xxx] entry in the calabar configuration"""
+    tunnel_type = models.CharField(max_length=30)
+    """Type of network tunnel this instance represents. Validators are based on this"""
+    cal_conf = models.TextField()
+    """The text for this Tunnels entry in its calabar.conf"""
+    tunnel_conf = models.TextField()
+    """The contents of the configuration file for this specific tunnel type"""
+    tunnel_conf_file = models.FileField('tunnel configuration file',
+                                        upload_to=get_tunnel_conf_upload_dir,
+                                        max_length=255,
+                                        blank=True, null=True)
+    """The tunnel configuration file for this specific tunnel"""
+
+    def __unicode__(self):
+        return u"Tunnel:<%s>" % self.name
+
+
+
 
 class CalabarConfig(models.Model):
     """
     A Calabar configuration object representing a set of tunnels and options.
     """
-    name = models.CharField(max_length=100, unique=True)
-    """This specific set of Tunnels' unique name"""
-    global_conf = models.TextField()
-    """The text for all non-tunnel configuration, like the ``[vpnc]`` section."""
-    conf = models.TextField()
-    """The entire contents of the configuration file from combining the global_conf
-    and the configurations of each included tunnel"""
-    conf_file = models.FileField('tunnel configuration file',
-                                        upload_to=CalabarConfig.get_conf_upload_dir,
-                                        max_length=255,
-                                        blank=True, null=True)
-    """The calabar configuration file."""
-    tunnels = models.ManyToManyField(TunnelConfig)
-
-    def __unicode__(self):
-        return u"Calabar:<%s>" % self.name
-
     @staticmethod
     def get_conf_upload_dir(instance, filename):
         """
@@ -72,3 +57,22 @@ class CalabarConfig(models.Model):
             "%s.conf" % instance.name,
         )
         return path
+
+    name = models.CharField(max_length=100, unique=True)
+    """This specific set of Tunnels' unique name"""
+    global_conf = models.TextField()
+    """The text for all non-tunnel configuration, like the ``[vpnc]`` section."""
+    conf = models.TextField()
+    """The entire contents of the configuration file from combining the global_conf
+    and the configurations of each included tunnel"""
+    conf_file = models.FileField('tunnel configuration file',
+                                        upload_to=get_conf_upload_dir,
+                                        max_length=255,
+                                        blank=True, null=True)
+    """The calabar configuration file."""
+    tunnels = models.ManyToManyField(TunnelConfig)
+
+    def __unicode__(self):
+        return u"Calabar:<%s>" % self.name
+
+
