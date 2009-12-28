@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.conf import settings
 
@@ -7,7 +9,6 @@ class TunnelConfig(models.Model):
     A configuration object for a specific tunnel. This objects encapsulates the
     specific configuration file and options for its tunnel.
     """
-    @staticmethod
     def get_tunnel_conf_upload_dir(instance, filename):
         """
         The upload path on which to store the :attr:`django_calabar.models.TunnelConfig.tunnel_conf_file`.
@@ -45,7 +46,6 @@ class CalabarConfig(models.Model):
     """
     A Calabar configuration object representing a set of tunnels and options.
     """
-    @staticmethod
     def get_conf_upload_dir(instance, filename):
         """
         The upload path on which to store the :attr:`django_calabar.models.TunnelConfig.tunnel_conf_file`.
